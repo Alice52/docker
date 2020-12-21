@@ -1,11 +1,12 @@
 [mysql]
-server-id=2
+server_id=2
+relay_log=/data/mysql/logs/relay-bin.log
 # this is for others salve.
 log_bin=/data/mysql/logs/mysql-bin.log
-master_host=49.235.91.10
-master_user=root
-master_password=MYSQL_PASSWORD
-master_port=3306
+#master_host=49.235.91.10
+#master_user=root
+#master_password=MYSQL_PASSWORD
+#master_port=3306
 #replicate-do-db=DB1
 #replicate-do-db=DB2
 #replicate-do-db=DB3 //需要同步的数据库, 如果没有本行, 即表示同步所有的数据库
