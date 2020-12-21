@@ -27,12 +27,34 @@ jobs:
           echo "PROJECT_HOME=$PWD" >> $GITHUB_ENV
           echo "TAG=`echo \`date +%Y%m%d\`.${GITHUB_SHA} | cut -c1-16`" >> $GITHUB_ENV
 
-      - name: Build and Push Dev-MySQL
+      - name: Build and Push Dev-MySQL-Standalone
         run: |
           VERSION=5.7
           cd $PROJECT_HOME/$VERSION
-          image=$IMAGE_PREFIX-mysql-$VERSION:${TAG}
-          docker build -f Dockerfile -t $image .
+          image=$IMAGE_PREFIX-mysql-standalone-$VERSION:${TAG}
+          docker build -f .standalone/Dockerfile -t $image .
+          docker login --username=$ALI_DOCKER_USERNAME --password=$ALI_DOCKER_PASSWORD $ALI_DOCKER_REGISTRY
+          docker tag $image $ALI_DOCKER_REGISTRY/alice52/$image
+          docker push $ALI_DOCKER_REGISTRY/alice52/$image
+          echo "image:" ${image}
+
+      - name: Build and Push Dev-MySQL-Master
+        run: |
+          VERSION=5.7
+          cd $PROJECT_HOME/$VERSION
+          image=$IMAGE_PREFIX-mysql-master-$VERSION:${TAG}
+          docker build -f .master/Dockerfile --build-arg MYSQL_PASSWORD=$MYSQL_PASSWORD -t $image .
+          docker login --username=$ALI_DOCKER_USERNAME --password=$ALI_DOCKER_PASSWORD $ALI_DOCKER_REGISTRY
+          docker tag $image $ALI_DOCKER_REGISTRY/alice52/$image
+          docker push $ALI_DOCKER_REGISTRY/alice52/$image
+          echo "image:" ${image}
+
+      - name: Build and Push Dev-MySQL-Slave
+        run: |
+          VERSION=5.7
+          cd $PROJECT_HOME/$VERSION
+          image=$IMAGE_PREFIX-mysql-slave-$VERSION:${TAG}
+          docker build -f .slave/Dockerfile --build-arg MYSQL_PASSWORD=$MYSQL_PASSWORD -t $image .
           docker login --username=$ALI_DOCKER_USERNAME --password=$ALI_DOCKER_PASSWORD $ALI_DOCKER_REGISTRY
           docker tag $image $ALI_DOCKER_REGISTRY/alice52/$image
           docker push $ALI_DOCKER_REGISTRY/alice52/$image

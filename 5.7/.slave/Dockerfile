@@ -93,11 +93,14 @@ RUN { \
 # ensure that /var/run/mysqld (used for socket and lock files) is writable regardless of the UID our mysqld instance ends up having at runtime
 	&& chmod 1777 /var/run/mysqld /var/lib/mysql
 
+ARG MYSQL_PASSWORD
 VOLUME /var/lib/mysql
 VOLUME /var/log/mysql
 
-COPY ./mysqld.cnf/ /etc/mysql/mysql.conf.d/
 COPY ./bin/docker-entrypoint.sh /usr/local/bin/
+COPY ./mysqld.cnf/ /etc/mysql/mysql.conf.d/
+COPY ./.slave/conf.d/ /etc/mysql/conf.d/
+RUN sed -i -e "s@MYSQL_PASSWORD@$MYSQL_PASSWORD@g" /etc/mysql/conf.d/mysql.cnf
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 RUN ln -s usr/local/bin/docker-entrypoint.sh /entrypoint.sh # backwards compat
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
