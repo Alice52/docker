@@ -1,8 +1,9 @@
 [mysqld]
 server_id=2
-relay_log=/data/mysql/logs/relay-bin.log
+# notice permission issue
+relay_log=/var/log/mysql/relay-bin.log
 # this is for others salve.
-log_bin=/data/mysql/logs/mysql-bin.log
+log_bin=/var/log/mysql/mysql-bin.log
 #master_host=49.235.91.10
 #master_user=root
 #master_password=MYSQL_PASSWORD
