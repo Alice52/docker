@@ -1,0 +1,28 @@
+version: '2.4'
+services:
+  mysql-slave:
+    image: registry.cn-shanghai.aliyuncs.com/alice52/dev-mysql-slave-5.7:20201221.1161b86
+    restart: 'on-failure:3'
+    container_name: dev-mysql-slave
+    ports:
+      - 3306:3306
+    volumes:
+      #- /root/mysql/conf/mysqld.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf
+      - /root/mysql/slave/logs:/var/log/mysql
+      - /root/mysql/slave/data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      TZ: Asia/Shanghai
+
+  mysql-master:
+    image: registry.cn-shanghai.aliyuncs.com/alice52/dev-mysql-master-5.7:20201221.1161b86
+    restart: 'on-failure:3'
+    container_name: dev-mysql-master
+    ports:
+      - 3306:3306
+    volumes:
+      - /root/mysql/master/logs:/var/log/mysql
+      - /root/mysql/master/data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      TZ: Asia/Shanghai
