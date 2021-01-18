@@ -1,15 +1,5 @@
-## docker
+## notice
 
-1. This repo is for docker images.
-
-## branch
-
-1. dev-mysql
-
-   - version: 5.7
-   - images: standalone, master, slave
-
-2. dev-redis
-
-   - version: 5.0
-   - images: standalone[master/salve]
+1. in this cluster should own mysql instance for store data
+2. nacos should hasve more than 3 instances in different server
+3. notice ip issue
