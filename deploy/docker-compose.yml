@@ -1,2 +1,23 @@
 version: '2.2'
 services:
+  rabbitmq:
+    image: rabbitmq:3.7.7-management
+    restart: 'no'
+    container_name: dev-rabbitmq
+    hostname: rabbit
+    ports:
+      - 15672:15672
+      - 5672:5672
+    volumes:
+      - /root/rabbitmq/data:/var/lib/rabbitmq
+      - /root/rabbitmq/logs:/var/log/rabbitmq
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '200k'
+        max-file: '10'
+    environment:
+      RABBITMQ_DEFAULT_VHOST: /
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+      TZ: Asia/Shanghai
