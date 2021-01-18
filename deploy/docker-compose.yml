@@ -1,2 +1,8 @@
 version: '2.2'
 services:
+  sentinel:
+    image: registry.cn-shanghai.aliyuncs.com/alice52/dev-sentinel:20200414.289f92f
+    restart: on-failure
+    container_name: dev-sentinel
+    ports:
+      - 8849:8080
