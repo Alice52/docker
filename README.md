@@ -13,3 +13,18 @@
 
    - version: 5.0
    - images: standalone[master/salve]
+   - cluster sample
+
+3. dev-nacos
+
+   - build script
+   - deploy yaml
+   - cluster
+
+4. dev-rocketmq
+5. dev-activemq
+6. dev-elastic-search
+7. dev-nginx
+8. dev-rabbitmq
+9. seata
+10. sentinel
