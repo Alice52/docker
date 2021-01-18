@@ -1,0 +1,21 @@
+version: '2.2'
+services:
+  elastic-search:
+    image: registry.cn-shanghai.aliyuncs.com/alice52/dev-elastic-search:20200706.8d96ac1
+    restart: 'on-failure:3'
+    container_name: dev-elastic-search
+    ports:
+      - 9200:9200
+      - 9300:9300
+    privileged: true
+    user: 'root'
+    volumes:
+      - elasticsearchdata:/usr/share/elasticsearch/data
+    environment:
+      discovery.type: single-node
+      CUSTOM_DIC_NAME: custom.dic
+      ES_JAVA_OPTS: '-Xms64m -Xmx256m'
+      TZ: Asia/Shanghai
+volumes:
+  elasticsearchdata:
+    driver: local
