@@ -1,0 +1,13 @@
+version: '2.2'
+services:
+  nginx:
+    image: registry.cn-shanghai.aliyuncs.com/alice52/dev-nginx:20200929.b7b0fc7
+    restart: always
+    container_name: dev-nginx
+    ports:
+      - 81:80
+    volumes:
+      - /root/nginx/www:/usr/share/nginx/html
+      - /root/nginx/logs:/var/log/nginx
+    environment:
+      TZ: Asia/Shanghai
