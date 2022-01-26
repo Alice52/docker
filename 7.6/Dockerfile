@@ -1,4 +1,4 @@
-FROM centos:centos7.6.1810
+FROM centos/systemd:latest
 
 RUN yum install ipvsadm -y
 RUN yum install keepalived -y
