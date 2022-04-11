@@ -31,7 +31,7 @@ jobs:
           VERSION=3.8.0
           cd $PROJECT_HOME/$VERSION
           image=$IMAGE_PREFIX-rabbitmq-$VERSION:${TAG}
-          docker build -f ./3.8.0/Dockerfile -t $image .
+          docker build -f Dockerfile -t $image .
           docker login --username=$ALI_DOCKER_USERNAME --password=$ALI_DOCKER_PASSWORD $ALI_DOCKER_REGISTRY
           docker tag $image $ALI_DOCKER_REGISTRY/alice52/$image
           docker push $ALI_DOCKER_REGISTRY/alice52/$image
