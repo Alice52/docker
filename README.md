@@ -28,3 +28,7 @@
 8. dev-rabbitmq
 9. seata
 10. sentinel
+11. common-service
+    - xxl-job
+    - arthas-server
+    - actuator-server
