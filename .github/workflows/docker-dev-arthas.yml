@@ -1,0 +1,42 @@
+name: Build Image Common-Service-Arthas
+
+on:
+  push:
+    branches:
+      - common-service
+  pull_request:
+
+jobs:
+  main:
+    runs-on: ubuntu-20.04
+    env: # define constant
+      IMAGE_PREFIX: common-service
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Export Global Var
+        # define global var, then put to GITHUB_ENV
+        run: |
+          echo "ALI_DOCKER_REGISTRY=${{ secrets.ALI_DOCKER_HUB_REGISTRY }}" >> $GITHUB_ENV
+          echo "ALI_DOCKER_USERNAME=${{ secrets.ALI_DOCKER_REGISTRY_USERNAME }}" >> $GITHUB_ENV
+          echo "ALI_DOCKER_PASSWORD=${{ secrets.ALI_DOCKER_REGISTRY_PASSWORD }}" >> $GITHUB_ENV
+          echo "MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}" >> $GITHUB_ENV
+          echo "REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}" >> $GITHUB_ENV
+          echo "MONGO_PASSWORD=${{ secrets.MONGO_PASSWORD }}" >> $GITHUB_ENV
+          echo "COMMON_SERVICE_IP=${{ secrets.COMMON_SERVICE_IP }}" >> $GITHUB_ENV
+          echo "PROJECT_HOME=$PWD" >> $GITHUB_ENV
+          echo "TAG=`echo \`date +%Y%m%d\`.${GITHUB_SHA} | cut -c1-16`" >> $GITHUB_ENV
+
+      - name: Build and Push Common-Service-Arthas
+        run: |
+          MODULE=arthas
+          VERSION=3.6.4
+          cd $PROJECT_HOME/$MODULE/version/$VERSION
+          wget https://github.com/alibaba/arthas/releases/download/arthas-all-${VERSION}/arthas-tunnel-server-${VERSION}-fatjar.jar -O app.jar
+          image=$IMAGE_PREFIX-$MODULE-$VERSION:${TAG}
+          docker build -f Dockerfile -t $image .
+          docker login --username=$ALI_DOCKER_USERNAME --password=$ALI_DOCKER_PASSWORD $ALI_DOCKER_REGISTRY
+          docker tag $image $ALI_DOCKER_REGISTRY/alice52/$image
+          docker push $ALI_DOCKER_REGISTRY/alice52/$image
+          echo "image:" ${image}
