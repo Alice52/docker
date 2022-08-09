@@ -1,2 +1,21 @@
-version: '2.2'
+version: '3.0'
 services:
+  service-arthas-server:
+    image: registry.cn-shanghai.aliyuncs.com/alice52/common-service-arthas-3.6.4:20220809.8c004bd
+    restart: 'on-failure:3'
+    container_name: dev-service-arthas-server
+    ports:
+      - 7777:7777
+      - 8080:8080
+    environment:
+      TZ: Asia/Shanghai
+
+  service-actuator-server:
+    image: registry.cn-shanghai.aliyuncs.com/alice52/common-service-actuator-0.0.1:20220809.1ea8757
+    restart: 'on-failure:3'
+    container_name: dev-service-actuator-server
+    ports:
+      - 8000:8010
+    environment:
+      TZ: Asia/Shanghai
+
