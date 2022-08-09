@@ -1,4 +1,4 @@
-name: Build Image Common-Service-Arthas
+name: Build Image Common-Service-Actuator
 
 on:
   push:
@@ -9,12 +9,29 @@ on:
 jobs:
   main:
     runs-on: ubuntu-20.04
-    if: "contains(github.event.head_commit.message, 'arthas')"
+    if: "contains(github.event.head_commit.message, 'actuator')"
     env: # define constant
       IMAGE_PREFIX: common-service
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
+        with:
+          path: ./docker
+
+      # clone actuator admin code
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          repository: Alice52/practice
+          submodules: true
+          token: ${{ secrets.API_TOKEN_GITHUB }}
+          path: ./practice
+
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+          # architecture: x64
 
       - name: Export Global Var
         # define global var, then put to GITHUB_ENV
@@ -29,12 +46,23 @@ jobs:
           echo "PROJECT_HOME=$PWD" >> $GITHUB_ENV
           echo "TAG=`echo \`date +%Y%m%d\`.${GITHUB_SHA} | cut -c1-16`" >> $GITHUB_ENV
 
-      - name: Build and Push Common-Service-Arthas
+      - name: Build Practice@actuator Module
         run: |
-          MODULE=arthas
-          VERSION=3.6.4
-          cd $PROJECT_HOME/$MODULE/version/$VERSION
-          wget https://github.com/alibaba/arthas/releases/download/arthas-all-${VERSION}/arthas-tunnel-server-${VERSION}-fatjar.jar -O app.jar
+          ls && pwd
+          cd $PROJECT_HOME/practice/backend/project-cloud-custom
+          rm ./common-api/pom.xml
+          mv ./common-api/pom.xml.dev ./common-api/pom.xml
+          mvn clean package -DskipTests=true
+
+      - name: Build And Push Common-Service-Actuator Image
+        run: |
+          ls && pwd
+          MODULE=actuator
+          VERSION=0.0.1
+
+          mv $PROJECT_HOME/practice/backend/project-cloud-custom/actuator-server/target/*.jar $PROJECT_HOME/docker/$MODULE/version/$VERSION/app.jar
+
+          cd $PROJECT_HOME/docker/$MODULE/version/$VERSION
           image=$IMAGE_PREFIX-$MODULE-$VERSION:${TAG}
           docker build -f Dockerfile -t $image .
           docker login --username=$ALI_DOCKER_USERNAME --password=$ALI_DOCKER_PASSWORD $ALI_DOCKER_REGISTRY
