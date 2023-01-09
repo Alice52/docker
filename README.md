@@ -26,6 +26,8 @@
      use_compression = false
      ```
 
+     - 每次部署时需要注意使用的是 volumes 配置文件不会重置, 需要手动删除: 一般不会使用这个作为配置
+
 2. frp server
 
    - 默认配置了 7500 作为 frps 的管理页面

@@ -10,7 +10,7 @@ services:
       TZ: Asia/Shanghai
 
   service-base-frpc:
-    image: registry.cn-shanghai.aliyuncs.com/alice52/base-frpc-0.46.0:20230109.245e799
+    image: registry.cn-shanghai.aliyuncs.com/alice52/base-frpc-0.46.0:20230109.af78bd1
     restart: 'always'
     container_name: base-frpc
     network_mode: host
