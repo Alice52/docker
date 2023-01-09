@@ -1,6 +1,11 @@
-version: '2.4'
+version: '3.0'
 # network: docker network create --driver bridge --subnet 192.168.0.0/16 --gateway 192.168.0.1 rocketmq-net
 # then set this in rocketmq-net
+networks:
+  default:
+    name: rocketmq-net
+    external: true
+
 services:
   namesrv:
     image: foxiswho/rocketmq:server-4.4.0
@@ -12,8 +17,8 @@ services:
       - /root/rocketmq/namesrv/logs:/opt/logs
       - /root/rocketmq/namesrv/store:/opt/store
       - /etc/localtime:/etc/localtime:ro
-    environment:
-      JAVA_OPT_EXT: '-server -Xms128m -Xmx128m -Xmn64m'
+    # environment:
+    #  JAVA_OPT_EXT: '-server -Xms1024m -Xmx1024m -Xmn512m'
 
   broker:
     image: foxiswho/rocketmq:broker-4.4.0
@@ -31,7 +36,7 @@ services:
     environment:
       NAMESRV_ADDR: 'dev-rmqnamesrv:9876'
       # JAVA_OPTS: " -Duser.home=/opt"
-      JAVA_OPT_EXT: '-server -Xms128m -Xmx128m -Xmn64m'
+      # JAVA_OPT_EXT: '-server -Xms1024m -Xmx1024m -Xmn512m'
 
   console:
     image: styletang/rocketmq-console-ng:latest
@@ -40,6 +45,9 @@ services:
     # restart: always
     # restart: on-failure
     # restart: unless-stopped
+    depends_on:
+      - namesrv
+      - broker
     ports:
       - 9990:8080
     volumes:

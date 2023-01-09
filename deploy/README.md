@@ -9,6 +9,8 @@
    ```
 
 2. notice broker.conf
+
    ```conf
+   # 公网Ip || docker 内网自己的地址
    brokerIP1=49.235.91.10
    ```
