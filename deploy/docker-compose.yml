@@ -1,3 +1,25 @@
 version: '3.0'
 services:
+  # port required: 7000 | 7500 | 7080
+  service-base-frps:
+    image: registry.cn-shanghai.aliyuncs.com/alice52/base-frps-0.46.0:20230109.ecb1380
+    restart: 'always'
+    container_name: base-frps
+    network_mode: host
+    environment:
+      TZ: Asia/Shanghai
 
+  service-base-frpc:
+    image: registry.cn-shanghai.aliyuncs.com/alice52/base-frpc-0.46.0:20230109.8a00853
+    restart: 'always'
+    container_name: base-frpc
+    network_mode: host
+    volumes:
+      - frpcdata:/etc/frp
+    environment:
+      TZ: Asia/Shanghai
+
+volumes:
+  # docker inspect base-frpc get real path
+  frpcdata:
+    driver: local
