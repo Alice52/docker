@@ -13,7 +13,7 @@
      frpc reload -c ./frpc.ini
      ```
 
-   - 默认配置了 7400 作为 frpc 的管页面
+   - 默认配置了 7400 作为 frpc 的管页面: 直接通过该页面进行管理
    - 批量端口暴露
 
      ```conf
@@ -31,6 +31,19 @@
 2. frp server
 
    - 默认配置了 7500 作为 frps 的管理页面
+
+## notice
+
+1. frps 服务器不能被转发的端口
+
+   - 19000: portainer
+   - 22: ssh
+   - 7500: frps dashboard
+
+2. frpc 一定需要转发的端口
+
+   - 7400: frpc config
+   - 9000: portainer
 
 ## issue
 
