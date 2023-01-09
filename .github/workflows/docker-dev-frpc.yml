@@ -30,7 +30,7 @@ jobs:
       - name: Build and Push Dev-Frpc
         run: |
           VERSION=0.46.0
-          cd $PROJECT_HOME/$VERSION/frpc
+          cd $PROJECT_HOME/version/$VERSION/frpc
           image=$IMAGE_PREFIX-frpc-$VERSION:${TAG}
           docker build -f Dockerfile -t $image .
           docker login --username=$ALI_DOCKER_USERNAME --password=$ALI_DOCKER_PASSWORD $ALI_DOCKER_REGISTRY

@@ -30,7 +30,7 @@ jobs:
       - name: Build and Push Dev-Frps
         run: |
           VERSION=0.46.0
-          cd $PROJECT_HOME/$VERSION/frps
+          cd $PROJECT_HOME/version/$VERSION/frps
           image=$IMAGE_PREFIX-frps-$VERSION:${TAG}
           docker build -f Dockerfile -t $image .
           docker login --username=$ALI_DOCKER_USERNAME --password=$ALI_DOCKER_PASSWORD $ALI_DOCKER_REGISTRY
