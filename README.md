@@ -1,34 +1,22 @@
-## docker
+## frp
 
-1. This repo is for docker images.
+1. 通过应用服务器的公网 IP 做内网穿透
 
-## branch
+## feature
 
-1. dev-mysql
+1. frp client
+2. frp server
 
-   - version: 5.7
-   - images: standalone, master, slave
+## issue
 
-2. dev-redis
+1. propagations
 
-   - version: 5.0
-   - images: standalone[master/salve]
-   - cluster sample
+   - 多个 frp 客户端间的连接
 
-3. dev-nacos
+---
 
-   - build script
-   - deploy yaml
-   - cluster
+## reference
 
-4. dev-rocketmq
-5. dev-activemq
-6. dev-elastic-search
-7. dev-nginx
-8. dev-rabbitmq
-9. seata
-10. sentinel
-11. common-service
-    - xxl-job
-    - arthas-server
-    - actuator-server
+1. https://gitee.com/spoto/natserver
+2. https://github.com/snowdreamtech/frp
+3. https://github.com/fatedier/frp
