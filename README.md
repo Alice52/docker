@@ -1,66 +1,12 @@
-## frp
+## filebeat
 
-1. 通过应用服务器的公网 IP 做内网穿透
-2. frps 与 frpc 是通过配置的 7000 做通信的
+1. 集成 filebeat 到 es
+2. 集成 filebeat 到 logstash
 
 ## feature
 
-1. frp client
-
-   - 热加载 frpc.ini
-
-     ```conf
-     frpc reload -c ./frpc.ini
-     ```
-
-   - 默认配置了 7400 作为 frpc 的管页面: 直接通过该页面进行管理
-   - 批量端口暴露
-
-     ```conf
-     [range:tcp_port]
-     type = tcp
-     local_ip = 127.0.0.1
-     local_port = 6010-6020,6022,6024-6028
-     remote_port = 6010-6020,6022,6024-6028
-     use_encryption = false
-     use_compression = false
-     ```
-
-     - 每次部署时需要注意使用的是 volumes 配置文件不会重置, 需要手动删除: 一般不会使用这个作为配置
-
-2. frp server
-
-   - 默认配置了 7500 作为 frps 的管理页面
-
-## notice
-
-1. frps 服务器不能被转发的端口
-
-   - 19000: portainer
-   - 22: ssh
-   - 7500: frps dashboard
-
-2. frpc 一定需要转发的端口
-
-   - 7400: frpc config
-   - 9000: portainer
-
-## issue
-
-1. propagations
-
-   - 多个 frp 客户端间的连接
-
-2. 相关参数安全问题
-
-   - [docker var] - [build] - [env](https://github.com/fatedier/frp#using-environment-variables)
+1. filebeat
 
 ---
 
 ## reference
-
-1. https://gitee.com/spoto/natserver
-2. https://github.com/snowdreamtech/frp
-3. https://github.com/fatedier/frp
-4. https://github.com/fatedier/frp/blob/dev/conf/frpc_full.ini
-5. https://github.com/fatedier/frp/blob/dev/conf/frps_full.ini
