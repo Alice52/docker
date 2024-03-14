@@ -48,7 +48,7 @@ services:
       TZ: Asia/Shanghai
 
   zookepper:
-    image: zookeeper:3.4.10
+    image: zookeeper:3.9.2
     restart: on-failure
     hostname: zoo1
     container_name: dev-zookeeper01
