@@ -14,7 +14,7 @@ services:
       TZ: Asia/Shanghai
 
   rabbitmq:
-    image: rabbitmq:3.7.7-management
+    image: rabbitmq:3.13.0-management
     restart: "no"
     container_name: dev-rabbitmq
     hostname: rabbit
