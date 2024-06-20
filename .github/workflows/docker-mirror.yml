@@ -1,0 +1,41 @@
+name: Mirror Docker Image
+
+on:
+  workflow_dispatch:
+    inputs:
+      tenant:
+        description: '镜像名称'
+        required: true
+        type: string
+
+concurrency:
+  group: ${{ github.event_name }}-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ['ubuntu-latest']
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Export Global Var
+        run: |
+          echo "ALI_DOCKER_REGISTRY=${{ secrets.ALI_DOCKER_HUB_REGISTRY }}" >> $GITHUB_ENV
+          echo "ALI_DOCKER_USERNAME=${{ secrets.ALI_DOCKER_REGISTRY_USERNAME }}" >> $GITHUB_ENV
+          echo "ALI_DOCKER_PASSWORD=${{ secrets.ALI_DOCKER_REGISTRY_PASSWORD }}" >> $GITHUB_ENV
+          echo "PROJECT_HOME=$PWD" >> $GITHUB_ENV
+          echo "TAG=`echo \`date +%Y%m%d\`.${GITHUB_SHA} | cut -c1-16`" >> $GITHUB_ENV
+
+      - name: Uplouad Docker Image Mirror
+        run: |
+          image=${{ github.event.inputs.tenant }}
+          aliImage="${image##*/}" #否则不符合阿里的命名规范(不能三层)
+          echo "image:" ${image}
+          echo "aliImage:" ${aliImage}
+          docker pull ${image}
+          docker login --username=$ALI_DOCKER_USERNAME --password=$ALI_DOCKER_PASSWORD $ALI_DOCKER_REGISTRY
+          docker tag ${image} $ALI_DOCKER_REGISTRY/alice52/${aliImage}
+          docker push $ALI_DOCKER_REGISTRY/alice52/${aliImage}
+          echo "image:" ${aliImage}
