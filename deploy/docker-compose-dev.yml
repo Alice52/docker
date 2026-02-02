@@ -63,7 +63,7 @@ services:
       ZOO_SERVERS: server.1=zoo1:2888:3888
 
   consul:
-    image: consul:1.6.1
+    image: consul:1.15.4
     restart: "no"
     container_name: dev-consul
     volumes:
